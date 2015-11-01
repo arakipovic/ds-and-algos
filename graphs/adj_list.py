@@ -34,7 +34,7 @@ class AdjListGraph(object):
         self.num_vertices = num_vertices
         self.vertices = [Vertex(uuid) for uuid in range(num_vertices)]
 
-    def add_edge(self, source, destination, cost=1):
+    def add_edge(self, source, destination, cost=float('inf')):
         neigh = self.vertices[destination]
         neigh.distance = cost
         self.vertices[source].add_neighbor(neigh)

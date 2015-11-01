@@ -15,14 +15,15 @@ def dfs(node):
 def bfs(node):
     Q = deque()
     Q.append(node)
+    node.visited = True
 
     while len(Q) > 0:
         temp = Q.popleft()
         print "visiting: {}".format(temp.uuid)
-        temp.visited = True
         for neigh in temp.neighbors:
             if not neigh.visited:
                 Q.append(neigh)
+                neigh.visited = True
 
 
 if __name__ == '__main__':
