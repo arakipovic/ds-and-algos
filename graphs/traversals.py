@@ -9,6 +9,7 @@ def dfs(node):
     print "visiting: {}".format(node.uuid)
     node.visited = True
     for neigh in node.neighbors:
+        neigh.previous = node
         dfs(neigh)
 
 
@@ -22,8 +23,9 @@ def bfs(node):
         print "visiting: {}".format(temp.uuid)
         for neigh in temp.neighbors:
             if not neigh.visited:
-                Q.append(neigh)
                 neigh.visited = True
+                neigh.previous = temp
+                Q.append(neigh)
 
 
 if __name__ == '__main__':

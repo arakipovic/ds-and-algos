@@ -8,6 +8,7 @@ class Vertex(object):
         self.neighbors = set()
         self.distance = distance
         self.previous = None
+        self.weights = {}
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
@@ -22,11 +23,16 @@ class Vertex(object):
     def __hash__(self):
         return hash(self.uuid)
 
-    def add_neighbor(self, neighbor):
+    def add_neighbor(self, neighbor, cost=float('inf')):
         self.neighbors.add(neighbor)
+        self.weights.update({neighbor: cost})
 
     def __repr__(self):
-        return "uuid: {}; v: {}; d: {}; neighbors: {}".format(self.uuid, self.visited, self.distance, [node.uuid for node in self.neighbors])
+        return "uuid: {}; d: {}".format(self.uuid, self.distance)
+
+    def __str__(self):
+        return "uuid: {}; v: {}; d: {}; n: {}; p: {}".format(self.uuid, self.visited, self.distance,
+                                                             [node.uuid for node in self.neighbors], self.previous)
 
 
 class AdjListGraph(object):
@@ -36,8 +42,7 @@ class AdjListGraph(object):
 
     def add_edge(self, source, destination, cost=float('inf')):
         neigh = self.vertices[destination]
-        neigh.distance = cost
-        self.vertices[source].add_neighbor(neigh)
+        self.vertices[source].add_neighbor(neigh, cost)
 
     def get_edges(self):
         """Return list of tuples (source, destination) vertex uuid."""
@@ -51,23 +56,23 @@ class AdjListGraph(object):
 
 def sample_graph():
     G = AdjListGraph(9)
-    G.add_edge(0, 1)
-    G.add_edge(0, 7)
-    G.add_edge(0, 4)
-    G.add_edge(1, 2)
-    G.add_edge(2, 1)
-    G.add_edge(2, 3)
-    G.add_edge(2, 4)
-    G.add_edge(3, 5)
-    G.add_edge(3, 6)
-    G.add_edge(3, 7)
-    G.add_edge(4, 3)
-    G.add_edge(4, 5)
-    G.add_edge(5, 6)
-    G.add_edge(5, 2)
-    G.add_edge(5, 3)
-    G.add_edge(6, 2)
-    G.add_edge(6, 7)
+    G.add_edge(0, 1, 1)
+    G.add_edge(0, 7, 3)
+    G.add_edge(0, 4, 4)
+    G.add_edge(1, 2, 2)
+    G.add_edge(2, 1, 6)
+    G.add_edge(2, 3, 7)
+    G.add_edge(2, 4, 1)
+    G.add_edge(3, 5, 3)
+    G.add_edge(3, 6, 1)
+    G.add_edge(3, 7, 1)
+    G.add_edge(4, 3, 1)
+    G.add_edge(4, 5, 2)
+    G.add_edge(5, 6, 12)
+    G.add_edge(5, 2, 21)
+    G.add_edge(5, 3, 11)
+    G.add_edge(6, 2, 1)
+    G.add_edge(6, 7, 6)
     G.add_edge(6, 7, 5)
 
     return G
